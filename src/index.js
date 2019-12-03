@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import Sidebar from './sidebar.js';
 import Card from './card.js';
 import Stack from './stack.js';
+import axios from 'axios';
 import './index.css';
-import './sidebar.css';
-import './data.json';
+//import './data.json';
 
-let data = require('./data.json')
+//let data = require('./data.json')
 //console.log(data.collections)
 
 class App extends React.Component {
@@ -17,8 +16,19 @@ class App extends React.Component {
             sideActive: Array(2).fill('red'),
             stackActive: null,
             currentCard: 0,
-            data: data
-        };
+            data: []    
+            };
+    }
+
+    componentWillMount(){
+        axios.get('data.json')
+        .then(res => {
+            const data = res.data;
+            console.log(data);
+            this.setState({
+                data: data.collections
+            });
+        })
     }
 
     stackClick(i) {
@@ -43,14 +53,13 @@ class App extends React.Component {
         );
     }
 
-    // renderSidebar(active){
-    //     return <Sidebar data={data} active={active} handleClick={() => this.sideClick()} />
-    // }
+
 
     createStacks() {
+        console.log(this.state.data)
         return (
             <div className='sideBar' >
-                {this.state.data.collections.map(item => this.renderStack(item)
+                {this.state.data.map(item => this.renderStack(item)
                 )} 
              </div>
         );
@@ -59,7 +68,7 @@ class App extends React.Component {
     leftArrow(){
         if(this.state.currentCard === 0){
             this.setState({
-                currentCard: (this.state.data.collections[this.state.stackActive].cards.length - 1)
+                currentCard: (this.state.data[this.state.stackActive].cards.length - 1)
             })
         }
         else{
@@ -70,7 +79,7 @@ class App extends React.Component {
     }
 
     rightArrow(){
-        if(this.state.currentCard === (this.state.data.collections[this.state.stackActive].cards.length - 1)){
+        if(this.state.currentCard === (this.state.data[this.state.stackActive].cards.length - 1)){
             this.setState({
                 currentCard: 0
             })
@@ -94,8 +103,8 @@ class App extends React.Component {
                 <button className="leftArrow" onClick={() => this.leftArrow()}> 
                     <p> Prev </p>
                 </button> 
-                <Card front={this.state.data.collections[this.state.stackActive].cards[id].word}
-                back={this.state.data.collections[this.state.stackActive].cards[id].definition}
+                <Card front={this.state.data[this.state.stackActive].cards[id].word}
+                back={this.state.data[this.state.stackActive].cards[id].definition}
                 id={id}
                 />
                 <button className="rightArrow" onClick={() => this.rightArrow()}> 
