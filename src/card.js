@@ -28,8 +28,7 @@ class Card extends React.Component{
         });
     }
 
-
-    
+  
     render(){
         return (
             <button className="card" onClick={() => this.handleClick()}>

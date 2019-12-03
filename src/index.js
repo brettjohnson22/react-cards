@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Card from './card.js';
 import Stack from './stack.js';
+import PostForm from './postform.js';
 import axios from 'axios';
 import './index.css';
 //import './data.json';
@@ -16,8 +17,22 @@ class App extends React.Component {
             sideActive: Array(2).fill('red'),
             stackActive: null,
             currentCard: 0,
-            data: []    
+            data: [],
+            title: '',
+            def: ''    
             };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        //axios post takes place here
+        event.preventDefault();
     }
 
     componentWillMount(){
@@ -52,8 +67,6 @@ class App extends React.Component {
             />
         );
     }
-
-
 
     createStacks() {
         console.log(this.state.data)
@@ -114,6 +127,22 @@ class App extends React.Component {
             )
         }
     }
+
+    renderPostForm(){
+        return(
+            <form>
+                <label>
+                    Title:
+                    <input type="text" name="title" />
+                </label>
+                <label>
+                    Definition:
+                    <input type="text" name="def" />
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        )
+    }
     
 
     render (){ 
@@ -121,6 +150,7 @@ class App extends React.Component {
         <div>
         {this.createStacks()}
         {this.renderCardAndArrows(this.state.currentCard)}
+        <PostForm onSubmit={this.handleSubmit}></PostForm>
         </div>
     );
     }
