@@ -33,7 +33,9 @@ class Card extends React.Component{
     render(){
         return (
             <button className="card" onClick={() => this.handleClick()}>
-                {this.state.front}
+
+                <h1>{this.state.front.toUpperCase()}</h1>
+                <p>{(this.props.id + 1)}</p>
             </button>
 
         );

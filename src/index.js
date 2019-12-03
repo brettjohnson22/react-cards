@@ -26,7 +26,8 @@ class App extends React.Component {
         sideActive[i - 1] = 'blue';
         this.setState({
             sideActive: sideActive,
-            stackActive: i - 1
+            stackActive: i - 1,
+            currentCard: 0
         });
     }
 
@@ -36,6 +37,7 @@ class App extends React.Component {
             title={item.title}
             value={item.id}
             color= {this.state.sideActive[item.id - 1]}
+            length={item.cards.length}
             handleClick={() => this.stackClick(item.id)}
             />
         );
@@ -104,15 +106,6 @@ class App extends React.Component {
         }
     }
     
-    createCard(id){
-
-    }
-    
-
-    createArrows(id){
-
-    }
-
 
     render (){ 
         return(
