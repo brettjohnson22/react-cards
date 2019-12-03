@@ -15,6 +15,8 @@ class App extends React.Component {
         super(props);
         this.state = {
             sideActive: Array(2).fill('red'),
+            stackActive: 0,
+            currentCard: 0,
             data: data
         };
     }
@@ -23,7 +25,8 @@ class App extends React.Component {
         const sideActive= Array(2).fill('red');
         sideActive[i - 1] = 'blue';
         this.setState({
-            sideActive: sideActive
+            sideActive: sideActive,
+            stackActive: i - 1
         });
     }
 
@@ -42,7 +45,7 @@ class App extends React.Component {
     //     return <Sidebar data={data} active={active} handleClick={() => this.sideClick()} />
     // }
 
-    renderSidebar() {
+    createStacks() {
         return (
             <div className='sideBar' >
                 {this.state.data.collections.map(item => this.renderStack(item)
@@ -51,20 +54,50 @@ class App extends React.Component {
         );
     }
 
-    renderCard(title){
+    leftArrow(){
+        this.setState({
+            currentCard: (this.state.currentCard -1)
+        })
+    }
+
+    rightArrow(){
+        this.setState({
+            currentCard: (this.state.currentCard +1)
+        })
+    }
+
+    renderCardAndArrows(id){
         return(
-            <Card front={title}
-            back="Test back"
+            <div>
+            <Card front={this.state.data.collections[this.state.stackActive].cards[id].word}
+            back={this.state.data.collections[this.state.stackActive].cards[id].definition}
+            id={id}
             />
+            <button className="leftArrow" onClick={() => this.leftArrow()}> 
+                <p> left </p>
+            </button> 
+            <button className="rightArrow" onClick={() => this.rightArrow()}> 
+                <p> right </p>
+            </button>
+            </div>
         )
+    }
+    
+    createCard(id){
+
+    }
+    
+
+    createArrows(id){
+
     }
 
 
     render (){ 
         return(
         <div>
-        {this.renderSidebar()}
-        {this.renderCard(this.state.current)}
+        {this.createStacks()}
+        {this.renderCardAndArrows(this.state.currentCard)}
         </div>
     );
     }

@@ -8,6 +8,7 @@ class Card extends React.Component{
             onFront: true,
             front: props.front,
             back: props.back,
+            id: props.id
         }
     }
 
@@ -19,11 +20,22 @@ class Card extends React.Component{
         })
     }
 
+    componentWillReceiveProps(props){
+        this.setState({
+            onFront: true,
+            front: props.front,
+            back: props.back,
+        });
+    }
+
+
+    
     render(){
         return (
             <button className="card" onClick={() => this.handleClick()}>
                 {this.state.front}
             </button>
+
         );
     }
 }
