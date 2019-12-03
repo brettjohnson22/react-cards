@@ -1,0 +1,7 @@
+.stack {
+    background: red;
+    border: 1 px solid #999;
+    height: 150px;
+    width: 250px;
+    float: left,
+}
