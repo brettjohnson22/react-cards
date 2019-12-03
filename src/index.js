@@ -15,7 +15,7 @@ class App extends React.Component {
         super(props);
         this.state = {
             sideActive: Array(2).fill('red'),
-            stackActive: 0,
+            stackActive: null,
             currentCard: 0,
             data: data
         };
@@ -55,32 +55,53 @@ class App extends React.Component {
     }
 
     leftArrow(){
+        if(this.state.currentCard === 0){
+            this.setState({
+                currentCard: (this.state.data.collections[this.state.stackActive].cards.length - 1)
+            })
+        }
+        else{
         this.setState({
             currentCard: (this.state.currentCard -1)
-        })
+            })
+        }
     }
 
     rightArrow(){
+        if(this.state.currentCard === (this.state.data.collections[this.state.stackActive].cards.length - 1)){
+            this.setState({
+                currentCard: 0
+            })
+        }
+        else{
         this.setState({
             currentCard: (this.state.currentCard +1)
-        })
+            })
+        }
     }
 
     renderCardAndArrows(id){
+        if(this.state.stackActive == null){
+            return(
+                <div></div>
+            )
+        }
+        else{
         return(
-            <div>
-            <Card front={this.state.data.collections[this.state.stackActive].cards[id].word}
-            back={this.state.data.collections[this.state.stackActive].cards[id].definition}
-            id={id}
-            />
-            <button className="leftArrow" onClick={() => this.leftArrow()}> 
-                <p> left </p>
-            </button> 
-            <button className="rightArrow" onClick={() => this.rightArrow()}> 
-                <p> right </p>
-            </button>
-            </div>
-        )
+                <div>
+                <button className="leftArrow" onClick={() => this.leftArrow()}> 
+                    <p> Prev </p>
+                </button> 
+                <Card front={this.state.data.collections[this.state.stackActive].cards[id].word}
+                back={this.state.data.collections[this.state.stackActive].cards[id].definition}
+                id={id}
+                />
+                <button className="rightArrow" onClick={() => this.rightArrow()}> 
+                    <p> Next </p>
+                </button>
+                </div>
+            )
+        }
     }
     
     createCard(id){
