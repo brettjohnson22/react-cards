@@ -3,7 +3,7 @@ import './collection.css';
 
 function Collection(props) {
     return (
-                <button className='collection' style={{background: props.color}} onClick={props.handleClick}>
+        <button className='collection' style={{background: props.color}} onClick={props.handleClick}>
             <h2>{props.title}</h2>
             <p>{props.length} cards</p>
         </button>

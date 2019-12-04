@@ -15,6 +15,7 @@ class App extends React.Component {
         this.state = {
             collActive: null,
             currentCard: 0,
+            frontOfCard: true,
             data: [],
             title: '',
             def: ''    
@@ -84,21 +85,47 @@ class App extends React.Component {
             );
         }
         else{
-        return(
-                <div>
-                <button className="leftArrow" onClick={() => this.leftArrow()}> 
-                    <p> Prev </p>
-                </button> 
-                <Card front={this.state.data[this.state.collActive].cards[id].word}
-                back={this.state.data[this.state.collActive].cards[id].definition}
-                id={id}
-                />
-                <button className="rightArrow" onClick={() => this.rightArrow()}> 
-                    <p> Next </p>
-                </button>
-                </div>
-            );
+            if(this.state.frontOfCard){
+                return(
+                        <div>
+                        <button className="leftArrow" onClick={() => this.leftArrow()}> 
+                            <p> Prev </p>
+                        </button> 
+                        <Card front={this.state.data[this.state.collActive].cards[id].word}
+                        back={this.state.data[this.state.collActive].cards[id].definition}
+                        id={id}
+                        handleClick={() => this.handleFlip()}
+                        />
+                        <button className="rightArrow" onClick={() => this.rightArrow()}> 
+                            <p> Next </p>
+                        </button>
+                        </div>
+                    );
+                }
+                else{
+                    return(
+                        <div>
+                        <button className="leftArrow" onClick={() => this.leftArrow()}> 
+                            <p> Prev </p>
+                        </button> 
+                        <Card front={this.state.data[this.state.collActive].cards[id].definition}
+                        back={this.state.data[this.state.collActive].cards[id].word}
+                        id={id}
+                        handleClick={() => this.handleFlip()}
+                        />
+                        <button className="rightArrow" onClick={() => this.rightArrow()}> 
+                            <p> Next </p>
+                        </button>
+                        </div>
+                    );
+                }
         }
+    }
+
+    handleFlip(){
+        this.setState({
+            frontOfCard: !this.state.frontOfCard
+        });
     }
 
     //Arrow functions are onClicks of the above arrow buttons that change state.currentCard and goes to other end of collection when reaching end.
