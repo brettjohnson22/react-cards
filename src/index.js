@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Card from './card.js';
-import Stack from './stack.js';
+import Collection from './collection.js';
 import PostForm from './postform.js';
 import axios from 'axios';
 import './index.css';
@@ -13,8 +13,7 @@ class App extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            //sideActive: Array(2).fill('red'),
-            stackActive: null,
+            collActive: null,
             currentCard: 0,
             data: [],
             title: '',
@@ -38,47 +37,47 @@ class App extends React.Component {
         });
     }
 
-    //Creates sidebar div and fills it with a stack for each collection in the data
+    //Creates sidebar div and fills it with a collection for each collection in the data
 
-    createStacks() {
+    createCollections() {
         return (
             <div className='sideBar' >
-                {this.state.data.map(item => this.renderStack(item)
+                {this.state.data.map(item => this.renderCollection(item)
                 )} 
              </div>
         );
     }
 
-    //Renders a single stack based on collection from data, color based on sideActive array
+    //Renders a single collection based on collection from data, color based on sideActive array
 
-    renderStack(item){
+    renderCollection(item){
         return (
-            <Stack
+            <Collection
             title={item.title}
             value={item.id}
             color= {this.state.sideBarActive[item.id - 1]}
             length={item.cards.length}
-            handleClick={() => this.stackClick(item.id)}
+            handleClick={() => this.collectionClick(item.id)}
             />
         );
     }
 
-    //Sets active stack when clicking on stack in sidebar, resets sideBarActive array to display correct color for each stack
+    //Sets active collection when clicking in sidebar, resets sideBarActive array to display correct color for each collection
 
-    stackClick(i) {
+    collectionClick(i) {
         const sideBarActive= Array(this.state.data.length).fill('red');
         sideBarActive[i - 1] = 'blue';
         this.setState({
             sideBarActive: sideBarActive,
-            stackActive: i - 1,
+            collActive: i - 1,
             currentCard: 0
         });
     }
 
-    //Renders active card from active stack and arrows that traverse collection
+    //Renders active card from active collection and arrows that traverse collection
 
     renderCardAndArrows(id){
-        if(this.state.stackActive == null){
+        if(this.state.collActive == null){
             return(
                 <div></div>
             );
@@ -89,8 +88,8 @@ class App extends React.Component {
                 <button className="leftArrow" onClick={() => this.leftArrow()}> 
                     <p> Prev </p>
                 </button> 
-                <Card front={this.state.data[this.state.stackActive].cards[id].word}
-                back={this.state.data[this.state.stackActive].cards[id].definition}
+                <Card front={this.state.data[this.state.collActive].cards[id].word}
+                back={this.state.data[this.state.collActive].cards[id].definition}
                 id={id}
                 />
                 <button className="rightArrow" onClick={() => this.rightArrow()}> 
@@ -106,7 +105,7 @@ class App extends React.Component {
     leftArrow(){
         if(this.state.currentCard === 0){
             this.setState({
-                currentCard: (this.state.data[this.state.stackActive].cards.length - 1)
+                currentCard: (this.state.data[this.state.collActive].cards.length - 1)
             });
         }
         else{
@@ -117,7 +116,7 @@ class App extends React.Component {
     }
 
     rightArrow(){
-        if(this.state.currentCard === (this.state.data[this.state.stackActive].cards.length - 1)){
+        if(this.state.currentCard === (this.state.data[this.state.collActive].cards.length - 1)){
             this.setState({
                 currentCard: 0
             });
@@ -132,7 +131,7 @@ class App extends React.Component {
     //Axios postform logic
 
     renderPostForm(){
-        if(this.state.stackActive == null)
+        if(this.state.collActive == null)
         {
             return(<div></div>);
         }
@@ -153,7 +152,7 @@ class App extends React.Component {
         event.preventDefault();
 
         const newCard = {
-            id: (this.state.data[this.state.stackActive].cards.length + 1),
+            id: (this.state.data[this.state.collActive].cards.length + 1),
             title: this.state.title,
             def: this.state.def
         };
@@ -169,7 +168,7 @@ class App extends React.Component {
     render (){ 
             return(
             <div>
-            {this.createStacks()}
+            {this.createCollections()}
             {this.renderCardAndArrows(this.state.currentCard)}
             {this.renderPostForm()}
             </div>
