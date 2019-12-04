@@ -6,6 +6,8 @@ import PostForm from './postform.js';
 import axios from 'axios';
 import './index.css';
 
+//state.sideActive is an array that tells stacks which color to render
+//state.title/def are values from postform 
 
 class App extends React.Component {
     constructor(props){
@@ -23,10 +25,9 @@ class App extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
     //Axios get to create data for cards
 
-    componentWillMount(){
+    componentDidMount(){
         axios.get('data.json')
         .then(res => {
             const data = res.data;
@@ -36,16 +37,15 @@ class App extends React.Component {
         });
     }
 
-    //Sets active stack when clicking on stack in sidebar, sets sideActive array to have 
+    //Creates sidebar div and fills it with a stack for each collection in the data
 
-    stackClick(i) {
-        const sideActive= Array(2).fill('red');
-        sideActive[i - 1] = 'blue';
-        this.setState({
-            sideActive: sideActive,
-            stackActive: i - 1,
-            currentCard: 0
-        });
+    createStacks() {
+        return (
+            <div className='sideBar' >
+                {this.state.data.map(item => this.renderStack(item)
+                )} 
+             </div>
+        );
     }
 
     //Renders a single stack based on collection from data, color based on sideActive array
@@ -62,18 +62,19 @@ class App extends React.Component {
         );
     }
 
-    //Creates sidebar div and fills it with a stack for each collection in the data
+    //Sets active stack when clicking on stack in sidebar, resets sideActive array to display correct color for each stack
 
-    createStacks() {
-        return (
-            <div className='sideBar' >
-                {this.state.data.map(item => this.renderStack(item)
-                )} 
-             </div>
-        );
+    stackClick(i) {
+        const sideActive= Array(2).fill('red');
+        sideActive[i - 1] = 'blue';
+        this.setState({
+            sideActive: sideActive,
+            stackActive: i - 1,
+            currentCard: 0
+        });
     }
 
-    //Renders active card from active stack
+    //Renders active card from active stack and arrows that traverse collection
 
     renderCardAndArrows(id){
         if(this.state.stackActive == null){
@@ -99,7 +100,7 @@ class App extends React.Component {
         }
     }
 
-    //Arrow functions are the onClicks of the arrow buttons that change state.currentCard.
+    //Arrow functions are onClicks of the above arrow buttons that change state.currentCard and goes to other end of collection when reaching end.
 
     leftArrow(){
         if(this.state.currentCard === 0){
@@ -164,7 +165,6 @@ class App extends React.Component {
         });
     }
 
-    
     render (){ 
             return(
             <div>
@@ -176,17 +176,7 @@ class App extends React.Component {
     }
 }
 
-
-
-
-
 ReactDOM.render(
     <App />,
     document.getElementById('root')
 );
-
-
-
-
-//I want to click on a stack, which will then render a new card with that title
-//

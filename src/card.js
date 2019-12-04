@@ -5,24 +5,25 @@ class Card extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            onFront: true,
             front: props.front,
             back: props.back,
             id: props.id
         }
     }
 
+    //Flips card when clicked
+
     handleClick(){
         this.setState({
-            onFront: !this.onFront,
             front: this.state.back,
             back: this.state.front,
         });
     }
 
+    //Forces rerender of card when given new props.
+
     componentWillReceiveProps(props){
         this.setState({
-            onFront: true,
             front: props.front,
             back: props.back,
         });
@@ -40,7 +41,3 @@ class Card extends React.Component{
 }
 
 export default Card
-
-//Display title/def text
-//OnClick, switch between the two
-//Track state to see if front or back is active

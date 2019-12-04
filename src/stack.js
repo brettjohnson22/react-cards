@@ -1,7 +1,6 @@
 import React from 'react';
 import './stack.css';
 
-
 function Stack(props) {
     return (
                 <button className='stack' style={{background: props.color}} onClick={props.handleClick}>
@@ -11,10 +10,4 @@ function Stack(props) {
     );
 }
 
-
 export default Stack;
-
-
-
-
-
