@@ -6,14 +6,14 @@ import PostForm from './postform.js';
 import axios from 'axios';
 import './index.css';
 
-//state.sideActive is an array that tells stacks which color to render
+
 //state.title/def are values from postform 
 
 class App extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            sideActive: Array(2).fill('red'),
+            //sideActive: Array(2).fill('red'),
             stackActive: null,
             currentCard: 0,
             data: [],
@@ -25,14 +25,15 @@ class App extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    //Axios get to create data for cards
+    //Axios get to create data for cards and sideActive array which will inform 
 
     componentDidMount(){
         axios.get('data.json')
         .then(res => {
             const data = res.data;
             this.setState({
-                data: data.collections
+                data: data.collections,
+                sideBarActive: Array(data.collections.length).fill('red')
             });
         });
     }
@@ -55,20 +56,20 @@ class App extends React.Component {
             <Stack
             title={item.title}
             value={item.id}
-            color= {this.state.sideActive[item.id - 1]}
+            color= {this.state.sideBarActive[item.id - 1]}
             length={item.cards.length}
             handleClick={() => this.stackClick(item.id)}
             />
         );
     }
 
-    //Sets active stack when clicking on stack in sidebar, resets sideActive array to display correct color for each stack
+    //Sets active stack when clicking on stack in sidebar, resets sideBarActive array to display correct color for each stack
 
     stackClick(i) {
-        const sideActive= Array(2).fill('red');
-        sideActive[i - 1] = 'blue';
+        const sideBarActive= Array(this.state.data.length).fill('red');
+        sideBarActive[i - 1] = 'blue';
         this.setState({
-            sideActive: sideActive,
+            sideBarActive: sideBarActive,
             stackActive: i - 1,
             currentCard: 0
         });
