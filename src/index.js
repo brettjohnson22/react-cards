@@ -72,7 +72,8 @@ class App extends React.Component {
         this.setState({
             sideBarActive: sideBarActive,
             collActive: i - 1,
-            currentCard: 0
+            currentCard: 0,
+            frontOfCard: true
         });
     }
 
@@ -91,8 +92,7 @@ class App extends React.Component {
                         <button className="leftArrow" onClick={() => this.leftArrow()}> 
                             <p> Prev </p>
                         </button> 
-                        <Card front={this.state.data[this.state.collActive].cards[id].word}
-                        back={this.state.data[this.state.collActive].cards[id].definition}
+                        <Card text={this.state.data[this.state.collActive].cards[id].word}
                         id={id}
                         handleClick={() => this.handleFlip()}
                         />
@@ -108,8 +108,7 @@ class App extends React.Component {
                         <button className="leftArrow" onClick={() => this.leftArrow()}> 
                             <p> Prev </p>
                         </button> 
-                        <Card front={this.state.data[this.state.collActive].cards[id].definition}
-                        back={this.state.data[this.state.collActive].cards[id].word}
+                        <Card text={this.state.data[this.state.collActive].cards[id].definition}
                         id={id}
                         handleClick={() => this.handleFlip()}
                         />
@@ -133,12 +132,14 @@ class App extends React.Component {
     leftArrow(){
         if(this.state.currentCard === 0){
             this.setState({
-                currentCard: (this.state.data[this.state.collActive].cards.length - 1)
+                currentCard: (this.state.data[this.state.collActive].cards.length - 1),
+                frontOfCard: true
             });
         }
         else{
         this.setState({
-            currentCard: (this.state.currentCard -1)
+            currentCard: (this.state.currentCard -1),
+            frontOfCard: true
             });
         }
     }
@@ -146,12 +147,14 @@ class App extends React.Component {
     rightArrow(){
         if(this.state.currentCard === (this.state.data[this.state.collActive].cards.length - 1)){
             this.setState({
-                currentCard: 0
+                currentCard: 0,
+                frontOfCard: true
             });
         }
         else{
         this.setState({
-            currentCard: (this.state.currentCard +1)
+            currentCard: (this.state.currentCard +1),
+            frontOfCard: true
             });
         }
     }
