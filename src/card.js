@@ -17,7 +17,7 @@ class Card extends React.Component{
             onFront: !this.onFront,
             front: this.state.back,
             back: this.state.front,
-        })
+        });
     }
 
     componentWillReceiveProps(props){
@@ -28,11 +28,9 @@ class Card extends React.Component{
         });
     }
 
-  
     render(){
         return (
             <button className="card" onClick={() => this.handleClick()}>
-
                 <h1>{this.state.front.toUpperCase()}</h1>
                 <p>{(this.props.id + 1)}</p>
             </button>

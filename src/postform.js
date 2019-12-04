@@ -10,12 +10,17 @@ class PostForm extends React.Component {
             def: ''
         };
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.handleDefChange = this.handleDefChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value});
+    handleTitleChange(event) {
+        this.setState({title: event.target.value});
+    }
+
+    handleDefChange(event) {
+        this.setState({def: event.target.value});
     }
 
     handleSubmit(event) {
@@ -28,13 +33,13 @@ class PostForm extends React.Component {
             <form onSubmit={this.handleSubmit}>
                 <label>
                     Title:
-                    <input type="text" name="title" />
+                    <input type="text" name="title" value={this.state.title} onChange={this.handleTitleChange}/>
                 </label>
                 <label>
                     Definition:
-                    <input type="text" name="def" />
+                    <input type="text" name="def" value={this.state.def} onChange={this.handleDefChange}/>
                 </label>
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Submit" onSubmit={this.handleSubmit}/>
             </form>
         )
     }

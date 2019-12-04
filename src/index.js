@@ -5,10 +5,7 @@ import Stack from './stack.js';
 import PostForm from './postform.js';
 import axios from 'axios';
 import './index.css';
-//import './data.json';
 
-//let data = require('./data.json')
-//console.log(data.collections)
 
 class App extends React.Component {
     constructor(props){
@@ -26,25 +23,20 @@ class App extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
 
-    handleSubmit(event) {
-        //axios post takes place here
-        event.preventDefault();
-    }
+    //Axios get to create data for cards
 
     componentWillMount(){
         axios.get('data.json')
         .then(res => {
             const data = res.data;
-            console.log(data);
             this.setState({
                 data: data.collections
             });
-        })
+        });
     }
+
+    //Sets active stack when clicking on stack in sidebar, sets sideActive array to have 
 
     stackClick(i) {
         const sideActive= Array(2).fill('red');
@@ -55,6 +47,8 @@ class App extends React.Component {
             currentCard: 0
         });
     }
+
+    //Renders a single stack based on collection from data, color based on sideActive array
 
     renderStack(item){
         return (
@@ -68,8 +62,9 @@ class App extends React.Component {
         );
     }
 
+    //Creates sidebar div and fills it with a stack for each collection in the data
+
     createStacks() {
-        console.log(this.state.data)
         return (
             <div className='sideBar' >
                 {this.state.data.map(item => this.renderStack(item)
@@ -78,37 +73,13 @@ class App extends React.Component {
         );
     }
 
-    leftArrow(){
-        if(this.state.currentCard === 0){
-            this.setState({
-                currentCard: (this.state.data[this.state.stackActive].cards.length - 1)
-            })
-        }
-        else{
-        this.setState({
-            currentCard: (this.state.currentCard -1)
-            })
-        }
-    }
-
-    rightArrow(){
-        if(this.state.currentCard === (this.state.data[this.state.stackActive].cards.length - 1)){
-            this.setState({
-                currentCard: 0
-            })
-        }
-        else{
-        this.setState({
-            currentCard: (this.state.currentCard +1)
-            })
-        }
-    }
+    //Renders active card from active stack
 
     renderCardAndArrows(id){
         if(this.state.stackActive == null){
             return(
                 <div></div>
-            )
+            );
         }
         else{
         return(
@@ -124,35 +95,84 @@ class App extends React.Component {
                     <p> Next </p>
                 </button>
                 </div>
-            )
+            );
         }
     }
 
-    renderPostForm(){
-        return(
-            <form>
-                <label>
-                    Title:
-                    <input type="text" name="title" />
-                </label>
-                <label>
-                    Definition:
-                    <input type="text" name="def" />
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
-        )
-    }
-    
+    //Arrow functions are the onClicks of the arrow buttons that change state.currentCard.
 
+    leftArrow(){
+        if(this.state.currentCard === 0){
+            this.setState({
+                currentCard: (this.state.data[this.state.stackActive].cards.length - 1)
+            });
+        }
+        else{
+        this.setState({
+            currentCard: (this.state.currentCard -1)
+            });
+        }
+    }
+
+    rightArrow(){
+        if(this.state.currentCard === (this.state.data[this.state.stackActive].cards.length - 1)){
+            this.setState({
+                currentCard: 0
+            });
+        }
+        else{
+        this.setState({
+            currentCard: (this.state.currentCard +1)
+            });
+        }
+    }
+
+    //Axios postform logic
+
+    renderPostForm(){
+        if(this.state.stackActive == null)
+        {
+            return(<div></div>);
+        }
+        else
+        {
+            return(
+                <PostForm onSubmit={this.handleSubmit}></PostForm>
+            );
+        }
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+
+        event.preventDefault();
+
+        const newCard = {
+            id: (this.state.data[this.state.stackActive].cards.length + 1),
+            title: this.state.title,
+            def: this.state.def
+        };
+        console.log(newCard);
+
+        axios.post('data.json', {newCard})
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        });
+    }
+
+    
     render (){ 
-        return(
-        <div>
-        {this.createStacks()}
-        {this.renderCardAndArrows(this.state.currentCard)}
-        <PostForm onSubmit={this.handleSubmit}></PostForm>
-        </div>
-    );
+            return(
+            <div>
+            {this.createStacks()}
+            {this.renderCardAndArrows(this.state.currentCard)}
+            {this.renderPostForm()}
+            </div>
+        );
     }
 }
 
