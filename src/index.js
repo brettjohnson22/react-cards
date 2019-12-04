@@ -42,6 +42,7 @@ class App extends React.Component {
     createCollections() {
         return (
             <div className='sideBar' >
+                <h3 className="titleHead">Collections</h3>
                 {this.state.data.map(item => this.renderCollection(item)
                 )} 
              </div>
