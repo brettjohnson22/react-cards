@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 
 class PostForm extends React.Component {
@@ -23,8 +24,23 @@ class PostForm extends React.Component {
     }
 
     handleSubmit(event) {
-        this.props.handleSubmit();
+
         event.preventDefault();
+
+        const newCard = {
+            id: this.props.id + 1,
+            word: this.state.title,
+            definition: this.state.def
+        };
+
+        var obj = this.props.data;
+        var collObj = obj[this.props.collActive];
+        collObj.cards.push(newCard);
+
+        axios.put('http://localhost:3000/collections/' + (this.props.collActive), collObj )
+        .then(res => {
+            console.log(res);
+        });
     }
 
     render(){

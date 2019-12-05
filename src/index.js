@@ -22,18 +22,18 @@ class App extends React.Component {
             };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        //this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     //Axios get to create data for cards and sideActive array which will inform 
 
     componentDidMount(){
-        axios.get('data.json')
+        axios.get('http://localhost:3000/collections')
         .then(res => {
             const data = res.data;
             this.setState({
-                data: data.collections,
-                sideBarActive: Array(data.collections.length).fill('red')
+                data: data,
+                sideBarActive: Array(data.length).fill('red')
             });
         });
     }
@@ -56,7 +56,7 @@ class App extends React.Component {
         return (
             <Collection
             title={item.title}
-            value={item.id}
+            key={item.id}
             color= {this.state.sideBarActive[item.id - 1]}
             length={item.cards.length}
             handleClick={() => this.collectionClick(item.id)}
@@ -88,36 +88,36 @@ class App extends React.Component {
         else{
             if(this.state.frontOfCard){
                 return(
-                        <div>
-                        <button className="leftArrow" onClick={() => this.leftArrow()}> 
-                            <p> Prev </p>
-                        </button> 
-                        <Card text={this.state.data[this.state.collActive].cards[id].word}
-                        id={id}
-                        handleClick={() => this.handleFlip()}
-                        />
-                        <button className="rightArrow" onClick={() => this.rightArrow()}> 
-                            <p> Next </p>
-                        </button>
-                        </div>
-                    );
-                }
-                else{
-                    return(
-                        <div>
-                        <button className="leftArrow" onClick={() => this.leftArrow()}> 
-                            <p> Prev </p>
-                        </button> 
-                        <Card text={this.state.data[this.state.collActive].cards[id].definition}
-                        id={id}
-                        handleClick={() => this.handleFlip()}
-                        />
-                        <button className="rightArrow" onClick={() => this.rightArrow()}> 
-                            <p> Next </p>
-                        </button>
-                        </div>
-                    );
-                }
+                    <div>
+                    <button className="leftArrow" onClick={() => this.leftArrow()}> 
+                        <p> Prev </p>
+                    </button> 
+                    <Card text={this.state.data[this.state.collActive].cards[id].word}
+                    id={id}
+                    handleClick={() => this.handleFlip()}
+                    />
+                    <button className="rightArrow" onClick={() => this.rightArrow()}> 
+                        <p> Next </p>
+                    </button>
+                    </div>
+                );
+            }
+            else{
+                return(
+                    <div>
+                    <button className="leftArrow" onClick={() => this.leftArrow()}> 
+                        <p> Prev </p>
+                    </button> 
+                    <Card text={this.state.data[this.state.collActive].cards[id].definition}
+                    id={id}
+                    handleClick={() => this.handleFlip()}
+                    />
+                    <button className="rightArrow" onClick={() => this.rightArrow()}> 
+                        <p> Next </p>
+                    </button>
+                    </div>
+                );
+            }
         }
     }
 
@@ -169,7 +169,7 @@ class App extends React.Component {
         else
         {
             return(
-                <PostForm onSubmit={this.handleSubmit}></PostForm>
+                <PostForm data={this.state.data} collActive={this.state.collActive} id={this.state.data[this.state.collActive].cards.length}></PostForm>
             );
         }
     }
@@ -178,23 +178,23 @@ class App extends React.Component {
         this.setState({value: event.target.value});
     }
 
-    handleSubmit(event) {
+    // handleSubmit(event) {
 
-        event.preventDefault();
+    //     event.preventDefault();
 
-        const newCard = {
-            id: (this.state.data[this.state.collActive].cards.length + 1),
-            title: this.state.title,
-            def: this.state.def
-        };
-        console.log(newCard);
+    //     const newCard = {
+    //         id: (this.state.data[this.state.collActive].cards.length + 1),
+    //         title: this.state.title,
+    //         def: this.state.def
+    //     };
+    //     console.log(newCard);
 
-        axios.post('data.json', {newCard})
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-        });
-    }
+    //     axios.post('http://localhost:3000/collections/', {newCard})
+    //     .then(res => {
+    //         console.log(res);
+    //         console.log(res.data);
+    //     });
+    // }
 
     render (){ 
             return(
