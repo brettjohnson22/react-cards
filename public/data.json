@@ -18,6 +18,11 @@
           "id": 3,
           "word": "component",
           "definition": "Reusable building blocks for UI using JSX"
+        },
+        {
+          "id": 4,
+          "word": "Interface",
+          "definition": "A contract"
         }
       ]
     },
@@ -39,6 +44,11 @@
           "id": 3,
           "word": "object",
           "definition": "Instance of a class"
+        },
+        {
+          "id": 4,
+          "word": "Interface",
+          "definition": "A contract"
         }
       ]
     }

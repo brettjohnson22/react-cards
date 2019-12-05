@@ -37,7 +37,7 @@ class PostForm extends React.Component {
         var collObj = obj[this.props.collActive];
         collObj.cards.push(newCard);
 
-        axios.put('http://localhost:3000/collections/' + (this.props.collActive), collObj )
+        axios.put('http://localhost:3000/collections/' + (this.props.collActive + 1), collObj )
         .then(res => {
             console.log(res);
         });
