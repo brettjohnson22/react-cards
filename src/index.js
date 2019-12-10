@@ -7,7 +7,6 @@ import axios from 'axios';
 import './index.css';
 
 
-//state.title/def are values from postform 
 
 class App extends React.Component {
     constructor(props){
@@ -16,16 +15,13 @@ class App extends React.Component {
             collActive: null,
             currentCard: 0,
             frontOfCard: true,
-            data: [],
-            title: '',
-            def: ''    
+            data: []  
             };
 
         this.handleChange = this.handleChange.bind(this);
-        //this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    //Axios get to create data for cards and sideActive array which will inform 
+    //Axios get to create data for cards and sideActive array which will inform which color to display
 
     componentDidMount(){
         axios.get('http://localhost:3000/collections')
@@ -178,23 +174,6 @@ class App extends React.Component {
         this.setState({value: event.target.value});
     }
 
-    // handleSubmit(event) {
-
-    //     event.preventDefault();
-
-    //     const newCard = {
-    //         id: (this.state.data[this.state.collActive].cards.length + 1),
-    //         title: this.state.title,
-    //         def: this.state.def
-    //     };
-    //     console.log(newCard);
-
-    //     axios.post('http://localhost:3000/collections/', {newCard})
-    //     .then(res => {
-    //         console.log(res);
-    //         console.log(res.data);
-    //     });
-    // }
 
     render (){ 
             return(
